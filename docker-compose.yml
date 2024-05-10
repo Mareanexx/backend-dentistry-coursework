@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:14.1-alpine
+    container_name: postresql_db
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=dental_clinic
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+      - ./initsql:/docker-entrypoint-initdb.d
+  server:
+    image: adoptopenjdk:11-jre-hotspot
+    container_name: server
+    volumes:
+      - ./dentistry-application-1.0.jar:/app.jar
+    command: java -jar app.jar
+    ports:
+      - '8081:8081'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/dental_clinic
+    restart: always
+    depends_on:
+      - postgres

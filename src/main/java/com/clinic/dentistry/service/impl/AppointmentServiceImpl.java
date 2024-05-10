@@ -41,7 +41,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Autowired
     private CheckService checkService;
-
     private LocalDateTime now = LocalDateTime.now();
     @Autowired
     private MailService mailService;
